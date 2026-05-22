@@ -1,0 +1,91 @@
+# =============================================
+# PYTHON
+# =============================================
+# Archivos que Python genera automáticamente al ejecutar código
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Entornos virtuales (librerías instaladas localmente)
+venv/
+env/
+.env
+.venv/
+
+# =============================================
+# DATOS Y MODELOS PESADOS
+# =============================================
+# Descomenta las líneas que necesites según tu caso
+
+# Si no quieres subir la carpeta de datos:
+# data/
+
+# Imágenes de datasets (demasiado pesadas para GitHub)
+golf_cv/data/patches/
+golf_cv/data/raw/
+golf_cv/data/results/
+semantic_segmentation/data/raw/
+semantic_segmentation/data/samples/
+trafic/data/
+trafic/samples/
+trafic/models/traffic_detector/
+trafic/results/
+
+# Si tienes ejemplos que SÍ quieres subir, descomenta esto:
+# !data/samples/
+# !data/examples/
+
+# Pesos de modelos entrenados (suelen ser muy pesados)
+models/*.pt
+models/*.pth
+models/*.h5
+models/*.pkl
+models/*.onnx
+models/*.weights
+
+# Si tienes modelos de ejemplo que sí quieres subir:
+# !models/example_model.pt
+
+# =============================================
+# OUTPUTS GENERADOS
+# =============================================
+# Resultados que se generan al correr el pipeline
+outputs/
+
+# Si tienes ejemplos de output que quieres mostrar:
+# !outputs/examples/
+
+# =============================================
+# SISTEMA OPERATIVO
+# =============================================
+# Archivos que Mac genera automáticamente
+.DS_Store
+.AppleDouble
+.LSOverrideF
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# =============================================
+# EDITORES Y IDEs
+# =============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =============================================
+# JUPYTER NOTEBOOKS
+# =============================================
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# =============================================
+# LOGS Y TEMPORALES
+# =============================================
+*.log
+*.tmp
+*.temp
+logs/

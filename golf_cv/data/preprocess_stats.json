@@ -1,0 +1,20 @@
+{
+  "patch_counts": {
+    "train": {
+      "healthy_grass": 359955,
+      "stressed_grass": 60342,
+      "bunker": 66261,
+      "water": 10821,
+      "other": 1089546
+    },
+    "val": {
+      "healthy_grass": 26103,
+      "stressed_grass": 5061,
+      "bunker": 4499,
+      "water": 849,
+      "other": 76663
+    }
+  },
+  "patch_size": 64,
+  "img_size": 512
+}

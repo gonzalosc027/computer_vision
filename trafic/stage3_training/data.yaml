@@ -1,0 +1,7 @@
+path: /Users/gonzalo/Desktop/Gonzalo/computer vision/trafic/data/processed
+train: train/images
+val: val/images
+test: test/images
+
+nc: 6
+names: ['person', 'bicycle', 'car', 'motorcycle', 'bus', 'truck']

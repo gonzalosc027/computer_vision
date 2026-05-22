@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Computer Vision Projects · Gonzalo</title>
+  <style>
+    :root {
+      --bg:        #0d1117;
+      --bg2:       #161b22;
+      --bg3:       #21262d;
+      --border:    #30363d;
+      --text:      #e6edf3;
+      --muted:     #8b949e;
+      --accent:    #58a6ff;
+      --green:     #3fb950;
+      --orange:    #d29922;
+      --purple:    #bc8cff;
+      --red:       #f85149;
+      --teal:      #39d353;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13,17,23,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+    .nav-brand {
+      font-weight: 700;
+      font-size: .95rem;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .nav-brand span { color: var(--accent); }
+    .nav-links { display: flex; gap: 1.5rem; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .88rem;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 5rem 2rem 3.5rem;
+      text-align: center;
+    }
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: rgba(88,166,255,.1);
+      border: 1px solid rgba(88,166,255,.25);
+      color: var(--accent);
+      font-size: .78rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .35rem .9rem;
+      border-radius: 999px;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -.02em;
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+      background: linear-gradient(135deg, #e6edf3 30%, #58a6ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 620px;
+      margin: 0 auto 2rem;
+    }
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+    .stat {
+      text-align: center;
+    }
+    .stat-num {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--accent);
+      display: block;
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: .78rem;
+      color: var(--muted);
+      margin-top: .3rem;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    /* ── STORY BANNER ── */
+    .story {
+      max-width: 860px;
+      margin: 0 auto 4rem;
+      padding: 0 2rem;
+    }
+    .story-card {
+      background: linear-gradient(135deg, rgba(88,166,255,.07) 0%, rgba(188,140,255,.07) 100%);
+      border: 1px solid rgba(88,166,255,.2);
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+    }
+    .story-icon {
+      font-size: 1.8rem;
+      flex-shrink: 0;
+      margin-top: .1rem;
+    }
+    .story-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: .4rem;
+    }
+    .story-card p {
+      font-size: .9rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+    .story-card strong { color: var(--text); }
+
+    /* ── SECTION TITLE ── */
+    .section-header {
+      max-width: 860px;
+      margin: 0 auto 2rem;
+      padding: 0 2rem;
+    }
+    .section-header h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: .4rem;
+    }
+    .section-header p {
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    /* ── PROJECTS ── */
+    .projects {
+      max-width: 860px;
+      margin: 0 auto 6rem;
+      padding: 0 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    .project-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: border-color .25s, transform .25s;
+    }
+    .project-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .card-header {
+      padding: 1.75rem 2rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+    }
+    .card-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    .icon-green  { background: rgba(63,185,80,.15); }
+    .icon-blue   { background: rgba(88,166,255,.15); }
+    .icon-purple { background: rgba(188,140,255,.15); }
+
+    .card-title-group { flex: 1; min-width: 0; }
+    .card-number {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: .3rem;
+    }
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: .5rem;
+    }
+    .card-subtitle {
+      font-size: .85rem;
+      color: var(--muted);
+    }
+
+    /* ── BADGES ── */
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem;
+      margin-top: .75rem;
+    }
+    .badge {
+      font-size: .72rem;
+      font-weight: 600;
+      padding: .22rem .65rem;
+      border-radius: 999px;
+      border: 1px solid;
+      letter-spacing: .03em;
+    }
+    .badge-blue   { color: #58a6ff; border-color: rgba(88,166,255,.35); background: rgba(88,166,255,.08); }
+    .badge-green  { color: #3fb950; border-color: rgba(63,185,80,.35);  background: rgba(63,185,80,.08); }
+    .badge-orange { color: #d29922; border-color: rgba(210,153,34,.35); background: rgba(210,153,34,.08); }
+    .badge-purple { color: #bc8cff; border-color: rgba(188,140,255,.35);background: rgba(188,140,255,.08); }
+    .badge-red    { color: #f85149; border-color: rgba(248,81,73,.35);  background: rgba(248,81,73,.08); }
+    .badge-teal   { color: #39d353; border-color: rgba(57,211,83,.35);  background: rgba(57,211,83,.08); }
+    .badge-gray   { color: #8b949e; border-color: rgba(139,148,158,.35);background: rgba(139,148,158,.08); }
+
+    /* ── CARD BODY ── */
+    .card-body {
+      padding: 1.5rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem 2rem;
+    }
+    @media (max-width: 600px) {
+      .card-body { grid-template-columns: 1fr; }
+    }
+
+    .card-section h4 {
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: .75rem;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+    .card-section p {
+      font-size: .9rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+    .card-section ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: .45rem;
+    }
+    .card-section li {
+      font-size: .87rem;
+      color: var(--muted);
+      display: flex;
+      align-items: flex-start;
+      gap: .5rem;
+    }
+    .card-section li::before {
+      content: '▸';
+      color: var(--accent);
+      flex-shrink: 0;
+      margin-top: .05em;
+    }
+
+    /* ── METRICS ROW ── */
+    .metrics-row {
+      padding: 1.25rem 2rem;
+      background: var(--bg3);
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+    .metric {
+      flex: 1;
+      min-width: 100px;
+      padding: .5rem 1rem;
+      border-right: 1px solid var(--border);
+    }
+    .metric:last-child { border-right: none; }
+    .metric-val {
+      font-size: 1.35rem;
+      font-weight: 800;
+      display: block;
+      line-height: 1;
+    }
+    .metric-label {
+      font-size: .72rem;
+      color: var(--muted);
+      margin-top: .25rem;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .green-val  { color: var(--green); }
+    .blue-val   { color: var(--accent); }
+    .purple-val { color: var(--purple); }
+    .orange-val { color: var(--orange); }
+
+    /* ── CARD FOOTER ACTIONS ── */
+    .card-footer {
+      padding: 1rem 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: .75rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .45rem 1rem;
+      border-radius: 8px;
+      font-size: .83rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: opacity .2s, transform .15s;
+    }
+    .btn:hover { opacity: .8; transform: translateY(-1px); }
+    .btn-primary {
+      background: var(--accent);
+      color: #0d1117;
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .card-footer-note {
+      margin-left: auto;
+      font-size: .78rem;
+      color: var(--muted);
+    }
+
+    /* ── PIPELINE STEPS ── */
+    .pipeline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      align-items: center;
+      margin-top: .75rem;
+    }
+    .pipe-step {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .3rem .7rem;
+      font-size: .78rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+    .pipe-arrow {
+      color: var(--muted);
+      font-size: .75rem;
+    }
+
+    /* ── HIGHLIGHT BOX ── */
+    .highlight-box {
+      background: rgba(63,185,80,.06);
+      border: 1px solid rgba(63,185,80,.2);
+      border-radius: 8px;
+      padding: .75rem 1rem;
+      margin-top: .75rem;
+      font-size: .83rem;
+      color: var(--muted);
+    }
+    .highlight-box strong { color: var(--green); }
+
+    .highlight-box-blue {
+      background: rgba(88,166,255,.06);
+      border: 1px solid rgba(88,166,255,.2);
+      border-radius: 8px;
+      padding: .75rem 1rem;
+      margin-top: .75rem;
+      font-size: .83rem;
+      color: var(--muted);
+    }
+    .highlight-box-blue strong { color: var(--accent); }
+
+    .highlight-box-purple {
+      background: rgba(188,140,255,.06);
+      border: 1px solid rgba(188,140,255,.2);
+      border-radius: 8px;
+      padding: .75rem 1rem;
+      margin-top: .75rem;
+      font-size: .83rem;
+      color: var(--muted);
+    }
+    .highlight-box-purple strong { color: var(--purple); }
+
+    /* ── BUGS SECTION ── */
+    .bug-list {
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+      margin-top: .5rem;
+    }
+    .bug-item {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: .5rem .8rem;
+      font-size: .82rem;
+    }
+    .bug-tag {
+      display: inline-block;
+      font-size: .68rem;
+      font-weight: 700;
+      padding: .1rem .45rem;
+      border-radius: 4px;
+      margin-right: .4rem;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .bug-tag-red    { background: rgba(248,81,73,.2);   color: var(--red); }
+    .bug-tag-blue   { background: rgba(88,166,255,.2);  color: var(--accent); }
+    .bug-tag-orange { background: rgba(210,153,34,.2);  color: var(--orange); }
+    .bug-item span { color: var(--muted); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: .85rem;
+    }
+    footer strong { color: var(--text); }
+
+    /* ── SCROLL ANIMATION ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .5s ease, transform .5s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ── FULL-WIDTH SECTION ── */
+    .card-full {
+      grid-column: 1 / -1;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#58a6ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    <span>CV</span> Projects · Gonzalo
+  </a>
+  <div class="nav-links">
+    <a href="#golf">Golf Analyzer</a>
+    <a href="#traffic">Traffic Analyzer</a>
+    <a href="#segmentation">Segmentación</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    Computer Vision · Proyecto Final de Asignatura
+  </div>
+  <h1>Tres sistemas completos<br>de visión artificial</h1>
+  <p class="hero-sub">
+    Desde imágenes aéreas de campos de golf hasta análisis de tráfico en tiempo real.
+    Cada proyecto incluye pipeline completo: datos, entrenamiento, inferencia y app web interactiva.
+  </p>
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">3</span>
+      <span class="stat-label">Proyectos completos</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">15</span>
+      <span class="stat-label">Etapas implementadas</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">48%</span>
+      <span class="stat-label">mAP50 tráfico</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">150</span>
+      <span class="stat-label">Clases semánticas</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">8+</span>
+      <span class="stat-label">Bugs críticos resueltos</span>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<div class="story fade-in">
+  <div class="story-card">
+    <div class="story-icon">💡</div>
+    <div>
+      <h3>El origen: demasiado ambicioso, y el punto de partida de todo</h3>
+      <p>
+        El proyecto original era un <strong>analizador de campos de golf</strong> con imágenes de satélite:
+        detección automática de hierba sana, zonas estresadas, bunkers y árboles.
+        Era técnicamente muy ambicioso — etiquetado automático por color HSV, corrección adaptativa de iluminación,
+        refinamiento geométrico de contornos — y a pesar de todo el esfuerzo invertido, no llegó a quedar completamente pulido.
+        Eso abrió la puerta a <strong>dos proyectos adicionales</strong> más acotados y mejor terminados: un analizador de tráfico
+        en tiempo real con YOLOv8 y OCR, y un sistema completo de segmentación semántica con SegFormer sobre ADE20K (150 clases).
+        Tres pipelines end-to-end, tres aplicaciones web funcionales.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION TITLE -->
+<div class="section-header fade-in">
+  <h2>Los tres proyectos</h2>
+  <p>Cada uno cubre el ciclo completo: datos → preprocesado → entrenamiento → inferencia → app web</p>
+</div>
+
+<!-- PROJECTS -->
+<div class="projects">
+
+  <!-- PROJECT 1: GOLF -->
+  <div class="project-card fade-in" id="golf">
+    <div class="card-header">
+      <div class="card-icon icon-green">⛳</div>
+      <div class="card-title-group">
+        <div class="card-number">Proyecto 01</div>
+        <div class="card-title">Golf Course Analyzer</div>
+        <div class="card-subtitle">Análisis automático de salud de campos de golf mediante visión aérea e IA</div>
+        <div class="badges">
+          <span class="badge badge-green">EfficientNet-B0</span>
+          <span class="badge badge-orange">Transfer Learning</span>
+          <span class="badge badge-blue">OpenCV</span>
+          <span class="badge badge-purple">Streamlit</span>
+          <span class="badge badge-teal">Weak Supervision</span>
+          <span class="badge badge-gray">PyTorch</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <!-- DESCRIPCIÓN -->
+      <div class="card-section card-full">
+        <h4>📋 Descripción</h4>
+        <p>
+          Sistema de visión por computador que analiza ortofotografías aéreas de campos de golf
+          (imágenes de dron o satélite) y detecta automáticamente el estado del terreno: zonas de hierba sana,
+          hierba estresada, bunkers y árboles. El resultado es un diagnóstico visual completo con métricas de salud,
+          mapas de color y recomendaciones automáticas de actuación para el greenkeeper.
+        </p>
+      </div>
+
+      <!-- PIPELINE -->
+      <div class="card-section card-full">
+        <h4>⚙️ Pipeline de 5 etapas</h4>
+        <div class="pipeline">
+          <span class="pipe-step">1. Organización</span>
+          <span class="pipe-arrow">→</span>
+          <span class="pipe-step">2. Preprocesado HSV</span>
+          <span class="pipe-arrow">→</span>
+          <span class="pipe-step">3. Entrenamiento CNN</span>
+          <span class="pipe-arrow">→</span>
+          <span class="pipe-step">4. Inferencia + Post-proc.</span>
+          <span class="pipe-arrow">→</span>
+          <span class="pipe-step">5. App Streamlit</span>
+        </div>
+      </div>
+
+      <!-- DATASET -->
+      <div class="card-section">
+        <h4>🗄️ Dataset</h4>
+        <ul>
+          <li>3.370 ortofotografías de campos de golf daneses</li>
+          <li>Etiquetado automático por color HSV <em>(weak supervision)</em></li>
+          <li>Eliminación de duplicados con <em>perceptual hash</em></li>
+          <li>División 70% train / 15% val / 15% test</li>
+          <li>Augmentación: flip, rotación, brillo, ruido gaussiano</li>
+        </ul>
+      </div>
+
+      <!-- MODELO -->
+      <div class="card-section">
+        <h4>🧠 Modelo</h4>
+        <ul>
+          <li><strong>EfficientNet-B0</strong> con transfer learning desde ImageNet</li>
+          <li>Clasificación de patches de 64×64 px con solapamiento 32px</li>
+          <li>25 épocas, early stopping tras 6 sin mejora</li>
+          <li>Checkpoint guardado: <code>models/best_model.pth</code></li>
+          <li>CrossEntropyLoss con class weights ponderados</li>
+        </ul>
+      </div>
+
+      <!-- FEATURES AVANZADAS -->
+      <div class="card-section">
+        <h4>✨ Técnicas avanzadas</h4>
+        <ul>
+          <li><strong>CLAHE</strong>: normalización adaptativa de iluminación (sol/sombra)</li>
+          <li><strong>Refinamiento por forma</strong>: contornos con ≥6 vértices = bunker real</li>
+          <li><strong>Corrección de franjas</strong>: detecta y reclasifica zonas de corte alterno</li>
+          <li><strong>Detección adaptativa de árboles</strong>: aprende el color por imagen</li>
+          <li><strong>Mapa de confianza</strong> por píxel (probabilidad máxima del modelo)</li>
+        </ul>
+      </div>
+
+      <!-- APP -->
+      <div class="card-section">
+        <h4>🌐 Aplicación web</h4>
+        <ul>
+          <li>Análisis individual: métricas, mapa de segmentación, overlay</li>
+          <li>Comparación temporal de dos fechas (mapa de cambios)</li>
+          <li>Health Score (0–100) + Nivel de estrés automático</li>
+          <li>Medición de áreas reales en m² y hectáreas</li>
+          <li>Exportación de informe PDF completo</li>
+        </ul>
+        <div class="highlight-box">
+          <strong>Cómo ejecutarlo:</strong> instala dependencias con <code>pip install -r requirements.txt</code>, luego <code>python3 run_pipeline.py 5</code> y abre <code>localhost:8501</code>. Sube cualquier ortofoto para ver el análisis.
+        </div>
+      </div>
+    </div>
+
+    <div class="metrics-row">
+      <div class="metric">
+        <span class="metric-val green-val">3.370</span>
+        <span class="metric-label">Imágenes</span>
+      </div>
+      <div class="metric">
+        <span class="metric-val green-val">4</span>
+        <span class="metric-label">Clases de terreno</span>
+      </div>
+      <div class="metric">
+        <span class="metric-val green-val">5</span>
+        <span class="metric-label">Etapas pipeline</span>
+      </div>
+      <div class="metric">
+        <span class="metric-val green-val">5</span>
+        <span class="metric-label">Técnicas post-proc.</span>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <a href="#" class="btn btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+        Ver código
+      </a>
+      <a href="/golf_cv/memoria/Golf_Course_Analyzer.pdf" class="btn btn-outline">📄 Documentación</a>
+      <span class="card-footer-note">Python 3.14 · PyTorch · Streamlit</span>
+    </div>
+  </div>
+
+
+  <!-- PROJECT 2: TRAFFIC -->
+  <div class="project-card fade-in" id="traffic">
+    <div class="card-header">
+      <div class="card-icon icon-blue">🚦</div>
+      <div class="card-title-group">
+        <div class="card-number">Proyecto 02</div>
+        <div class="card-title">Smart Traffic Analyzer</div>
+        <div class="card-subtitle">Detección de vehículos, estimación de velocidad y lectura de señales en tiempo real</div>
+        <div class="badges">
+          <span class="badge badge-blue">YOLOv8n</span>
+          <span class="badge badge-green">ByteTrack</span>
+          <span class="badge badge-red">EasyOCR</span>
+          <span class="badge badge-orange">Fine-tuning</span>
+          <span class="badge badge-purple">Streamlit</span>
+          <span class="badge badge-teal">Apple MPS</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <!-- DESCRIPCIÓN -->
+      <div class="card-section card-full">
+        <h4>📋 Descripción</h4>
+        <p>
+          Aplicación web de análisis de tráfico que procesa imágenes, vídeo grabado o cámara en directo.
+          Detecta y clasifica seis tipos de vehículos con tracking individual (ByteTrack), estima la velocidad
+          de cada uno con corrección de perspectiva, detecta señales de límite de velocidad mediante HSV + OCR
+          y genera informes PDF y CSV descargables. Incluye un modelo propio fine-tuned sobre COCO.
+        </p>
+      </div>
+
+      <!-- PIPELINE -->
+      <div class="card-section card-full">
+        <h4>⚙️ Pipeline de 5 etapas</h4>
+        <div class="pipeline">
+          <span class="pipe-step">1. Descarga COCO</span>
+          <span class="pipe-arrow">→</span>
+          <span class="pipe-step">2. Preprocesado + Aug.</span>
+          <span class="pipe-arrow">→</span>
+          <span class="pipe-step">3. Fine-tuning YOLOv8</span>
+          <span class="pipe-arrow">→</span>
+          <span class="pipe-step">4. Inferencia + mAP</span>
+          <span class="pipe-arrow">→</span>
+          <span class="pipe-step">5. App Streamlit</span>
+        </div>
+      </div>
+
+      <!-- DATASET -->
+      <div class="card-section">
+        <h4>🗄️ Dataset</h4>
+        <ul>
+          <li>2.000 imágenes del COCO 2017 val set</li>
+          <li>Filtrado: solo imágenes con vehículos de 6 clases</li>
+          <li>Conversión COCO JSON → formato YOLO txt</li>
+          <li>Split: 80% train (~1.600) / 20% val (400 + 5 background)</li>
+          <li>Aumentación: mosaic, HSV jitter, flip, scale, erasing</li>
+        </ul>
+      </div>
+
+      <!-- MODELO -->
+      <div class="card-section">
+        <h4>🧠 Modelo</h4>
+        <ul>
+          <li><strong>YOLOv8n</strong> fine-tuned propio: <code>models/best.pt</code></li>
+          <li>30 épocas, batch 8, imagen 640×640 px, AdamW</li>
+          <li>Mejor época 28: <strong>mAP50 = 0.4808</strong></li>
+          <li>Bus: AP50 0.06 → 0.51 (<strong>+753%</strong> con fine-tuning)</li>
+        </ul>
+        <div class="highlight-box-blue">
+          <strong>Bug crítico corregido:</strong> el mapeo erróneo de IDs COCO hacía que los camiones nunca se detectasen (IndexError silencioso). Solución: diccionario explícito <code>COCO_TO_NAME</code>.
+        </div>
+      </div>
+
+      <!-- FEATURES -->
+      <div class="card-section">
+        <h4>✨ Funcionalidades destacadas</h4>
+        <ul>
+          <li><strong>Velocidad con perspectiva</strong>: escala dinámica por tamaño de bbox</li>
+          <li><strong>Heatmap acumulativo</strong> de concentración de vehículos</li>
+          <li><strong>Línea de conteo virtual</strong> con dirección arriba/abajo</li>
+          <li><strong>Señales de velocidad</strong>: HSV + Hough + morfología + OCR</li>
+          <li><strong>Carteles de dirección</strong>: azul/verde con validación por texto</li>
+          <li>Densidad de tráfico: Fluido / Moderado / Denso / Colapso</li>
+        </ul>
+      </div>
+
+      <!-- EJECUCIÓN -->
+      <div class="card-section">
+        <h4>▶️ Cómo ejecutarlo</h4>
+        <ul>
+          <li><code>pip install -r requirements.txt</code></li>
+          <li>Entrenar (opcional): <code>python3 train.py</code> — genera <code>models/best.pt</code></li>
+          <li>Lanzar app: <code>streamlit run app.py</code> → <code>localhost:8501</code></li>
+          <li>Sube una imagen, vídeo o conecta una cámara IP/USB</li>
+          <li>Si no hay modelo propio, usa YOLOv8n genérico automáticamente</li>
+        </ul>
+      </div>
+
+      <!-- BUGS RESUELTOS -->
+      <div class="card-section">
+        <h4>🐛 Bugs resueltos durante el desarrollo</h4>
+        <div class="bug-list">
+          <div class="bug-item">
+            <span class="bug-tag bug-tag-red">Crítico</span>
+            <span>Camiones no detectados: bug de mapeo de IDs COCO</span>
+          </div>
+          <div class="bug-item">
+            <span class="bug-tag bug-tag-blue">FP</span>
+            <span>Señales de velocidad inventadas: duplicados en Hough</span>
+          </div>
+          <div class="bug-item">
+            <span class="bug-tag bug-tag-orange">Perf.</span>
+            <span>Vehículos desaparecían: modelo contaminado por filtro de señales</span>
+          </div>
+          <div class="bug-item">
+            <span class="bug-tag bug-tag-blue">FP</span>
+            <span>Faros de camión detectados como señales: nuevo test de centro+área</span>
+          </div>
+          <div class="bug-item">
+            <span class="bug-tag bug-tag-blue">Bug</span>
+            <span>Velocidades 4× más lentas: corrección de perspectiva por vehículo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="metrics-row">
+      <div class="metric">
+        <span class="metric-val blue-val">48.1%</span>
+        <span class="metric-label">mAP50</span>
+      </div>
+      <div class="metric">
+        <span class="metric-val blue-val">+15.2%</span>
+        <span class="metric-label">Precisión vs. genérico</span>
+      </div>
+      <div class="metric">
+        <span class="metric-val blue-val">2.000</span>
+        <span class="metric-label">Imágenes COCO</span>
+      </div>
+      <div class="metric">
+        <span class="metric-val blue-val">6</span>
+        <span class="metric-label">Clases detectadas</span>
+      </div>
+      <div class="metric">
+        <span class="metric-val blue-val">8+</span>
+        <span class="metric-label">Bugs resueltos</span>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <a href="#" class="btn btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+        Ver código
+      </a>
+      <a href="/trafic/memoria/Smart_Traffic_Analyzer.pdf" class="btn btn-outline">📄 Documentación</a>
+      <span class="card-footer-note">YOLOv8 · ByteTrack · EasyOCR · Python 3.14</span>
+    </div>
+  </div>
+
+
+  <!-- PROJECT 3: SEGMENTATION -->
+  <div class="project-card fade-in" id="segmentation">
+    <div class="card-header">
+      <div class="card-icon icon-purple">🏙️</div>
+      <div class="card-title-group">
+        <div class="card-number">Proyecto 03</div>
+        <div class="card-title">Segmentación Semántica · ADE20K</div>
+        <div class="card-subtitle">Sistema completo de segmentación de escenas con 150 clases sobre el dataset ADE20K</div>
+        <div class="badges">
+          <span class="badge badge-purple">SegFormer-B0</span>
+          <span class="badge badge-blue">HuggingFace</span>
+          <span class="badge badge-orange">PyTorch</span>
+          <span class="badge badge-green">Gradio</span>
+          <span class="badge badge-teal">albumentations</span>
+          <span class="badge badge-red">pytest</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <!-- DESCRIPCIÓN -->
+      <div class="card-section card-full">
+        <h4>📋 Descripción</h4>
+        <p>
+          Dado cualquier fotograma, el sistema produce un mapa denso de etiquetas semánticas que asigna
+          una clase a cada píxel: cielo, coches, personas, edificios, vegetación, etc. — 150 categorías en total.
+          El pipeline cubre desde la descarga automática del dataset ADE20K hasta la aplicación web interactiva
+          con interfaz Gradio, slider de opacidad y leyenda dinámica de clases detectadas.
+        </p>
+      </div>
+
+      <!-- PIPELINE -->
+      <div class="card-section card-full">
+        <h4>⚙️ Pipeline de 5 etapas</h4>
+        <div class="pipeline">
+          <span class="pipe-step">1. Adquisición ADE20K</span>
+          <span class="pipe-arrow">→</span>
+          <span class="pipe-step">2. Preprocesado + Aug.</span>
+          <span class="pipe-arrow">→</span>
+          <span class="pipe-step">3. Fine-tuning SegFormer</span>
+          <span class="pipe-arrow">→</span>
+          <span class="pipe-step">4. Inferencia + mIoU</span>
+          <span class="pipe-arrow">→</span>
+          <span class="pipe-step">5. App Gradio</span>
+        </div>
+      </div>
+
+      <!-- DATASET -->
+      <div class="card-section">
+        <h4>🗄️ Dataset</h4>
+        <ul>
+          <li>ADE20K <code>scene_parse_150</code> (MIT CSAIL)</li>
+          <li>3.000 train + 500 val + 200 test (desde HuggingFace Hub)</li>
+          <li>150 clases semánticas, anotación píxel a píxel</li>
+          <li>Desbalance compensado con CrossEntropyLoss ponderada</li>
+          <li>Aumentación: flip, brillo/contraste, rotación 90°, blur</li>
+        </ul>
+      </div>
+
+      <!-- MODELO -->
+      <div class="card-section">
+        <h4>🧠 Arquitectura: SegFormer-B0</h4>
+        <ul>
+          <li>Encoder <strong>Mix Transformer (MiT-B0)</strong>: 3.7M parámetros</li>
+          <li>Decoder <strong>All-MLP</strong>: minimalista, ~0.4M parámetros</li>
+          <li>Base: <code>nvidia/segformer-b0-finetuned-ade-512-512</code></li>
+          <li>Fine-tuning: 10 épocas, AdamW lr=6e-5, CosineAnnealingLR</li>
+          <li>mIoU de referencia (sin fine-tuning propio): ~37%</li>
+        </ul>
+        <div class="highlight-box-purple">
+          <strong>¿Por qué SegFormer-B0?</strong> Balance ideal: suficientemente preciso en ADE20K y ligero para correr en CPU / Apple Silicon sin GPU NVIDIA.
+        </div>
+      </div>
+
+      <!-- FEATURES APP -->
+      <div class="card-section">
+        <h4>✨ Aplicación Gradio</h4>
+        <ul>
+          <li>Subida de imagen por drag & drop, click o portapapeles</li>
+          <li>Pestaña <strong>Segmentación</strong>: máscara coloreada pura (150 colores)</li>
+          <li>Pestaña <strong>Overlay</strong>: blend ajustable con slider de opacidad</li>
+          <li>Leyenda dinámica: solo clases presentes, ordenadas por área</li>
+          <li>Tiempo de inferencia + dispositivo mostrados en pantalla</li>
+          <li>Galería de ejemplos precargados para demo rápida</li>
+        </ul>
+        <div class="highlight-box-purple">
+          <strong>Cómo ejecutarlo:</strong> <code>pip install -r requirements.txt</code> → <code>python3 src/etapa5_app.py</code>. El modelo se descarga automáticamente desde HuggingFace (~90 MB) y la app abre en <code>localhost:7860</code>.
+        </div>
+      </div>
+
+      <!-- TESTS -->
+      <div class="card-section">
+        <h4>🧪 Suite de tests automáticos</h4>
+        <ul>
+          <li>Tests con <strong>pytest</strong>, organizados por etapa (4 ficheros)</li>
+          <li>Validación de shapes de batch (8, 3, 512, 512)</li>
+          <li>Verificación de rango de máscaras [0, 149]</li>
+          <li>Forward pass sin NaN + mIoU final &gt; mIoU inicial</li>
+          <li>Inferencia sobre 3 imágenes de internet + cobertura 100% píxeles</li>
+          <li>Detección de clase 'sky' en imágenes de paisaje</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="metrics-row">
+      <div class="metric">
+        <span class="metric-val purple-val">150</span>
+        <span class="metric-label">Clases semánticas</span>
+      </div>
+      <div class="metric">
+        <span class="metric-val purple-val">3.700</span>
+        <span class="metric-label">Imágenes</span>
+      </div>
+      <div class="metric">
+        <span class="metric-val purple-val">4.1M</span>
+        <span class="metric-label">Parámetros</span>
+      </div>
+      <div class="metric">
+        <span class="metric-val purple-val">~37%</span>
+        <span class="metric-label">mIoU base</span>
+      </div>
+      <div class="metric">
+        <span class="metric-val purple-val">15+</span>
+        <span class="metric-label">Tests automáticos</span>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <a href="#" class="btn btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+        Ver código
+      </a>
+      <a href="/semantic_segmentation/memoria/Segmentacion_Semantica.pdf" class="btn btn-outline">📄 Documentación</a>
+      <span class="card-footer-note">SegFormer · HuggingFace · Gradio · pytest</span>
+    </div>
+  </div>
+
+</div><!-- /projects -->
+
+<!-- REFLECTION -->
+<div class="story fade-in" style="margin-bottom: 2rem;">
+  <div class="story-card" style="background: linear-gradient(135deg, rgba(139,148,158,.07) 0%, rgba(88,166,255,.05) 100%); border-color: rgba(139,148,158,.2);">
+    <div class="story-icon">📝</div>
+    <div>
+      <h3 style="color: var(--muted);">Reflexión y herramientas</h3>
+      <p>
+        Estos tres proyectos me han servido para aprender cosas que no había tocado antes: YOLO para detección de objetos, tracking con ByteTrack, lectura de texto en imágenes con OCR, filtros HSV para segmentar por color, o arquitecturas como SegFormer para segmentación semántica. También he montado interfaces web con Streamlit y Gradio para que los modelos sean utilizables. No todo ha salido perfecto y hay partes que se podrían mejorar.
+      </p>
+      <p style="margin-top: .75rem;">
+        Para el desarrollo he usado varias herramientas de IA: Copilot para ir corrigiendo errores sobre la marcha, Claude para ayudarme con partes del código, y ChatGPT para pulir el texto de la memoria.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>
+    <strong>Gonzalo</strong> · Proyecto Final de Computer Vision · Mayo 2026
+  </p>
+  <p style="margin-top:.5rem; font-size:.78rem;">
+    Tres pipelines end-to-end · Python 3.14 · PyTorch · HuggingFace · Streamlit · Gradio
+  </p>
+</footer>
+
+<script>
+  // Scroll fade-in
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Smooth anchor scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href').slice(1);
+      const el = document.getElementById(id);
+      if (el) {
+        e.preventDefault();
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+</body>
+</html>
